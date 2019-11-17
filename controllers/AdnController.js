@@ -10,13 +10,13 @@ const hasMutation = (req, res) => {
     try {
         //verify if contains some mutation
         if (readDiagonalMatrix(adn, true) || readDiagonalMatrix(adn) || readMatrixLineally(adn)) {
+            isMutation = true;
             res.status(200).send({ message: 'OK' })
         } else {
-            isMutation = true;
             res.status(403).send({ message: 'mutaion' })
         }
 
-        BitacoraModel.findOneOrCreate({ adn: adn.join(), mutation: isMutation });
+        BitacoraModel.create({ adn: adn.join(), mutation: isMutation });
     } catch (error) {
         //handle any issue on the process and send the issue
         console.log('error', error)
@@ -128,6 +128,31 @@ const checkResult = (result, currentValue) => {
     return { status: false, result };
 }
 
+const getStatus = (req, res) => {
+    BitacoraModel.find({}, (err, docs) => {
+        if (err) {
+            //handle any issue on the process and send the issue
+            console.log('error', error)
+            return res.status(500).send({ error });
+        }
+        //init response structure
+        const result = { count_mutations: 0, count_no_mutation: 0, ratio: 0 }
+        for (const item of docs) {
+            //check mutation flag
+            if (item.mutation) {
+                result.count_no_mutation++;
+            } else {
+                result.count_mutations++;
+            }
+        }
+        //get ratio
+        result.ratio = Math.round((result.count_mutations / result.count_no_mutation) * 100) / 100;
+        //send response
+        return res.status(200).send(result);
+    });
+}
+
 module.exports = {
-    hasMutation
+    hasMutation,
+    getStatus
 }
