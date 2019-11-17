@@ -16,7 +16,7 @@ const hasMutation = (req, res) => {
             res.status(403).send({ message: 'mutaion' })
         }
 
-        //BitacoraModel.findOneOrCreate({ adn: adn.join(), mutation: isMutation });
+        BitacoraModel.findOneOrCreate({ adn: adn.join(), mutation: isMutation });
     } catch (error) {
         //handle any issue on the process and send the issue
         console.log('error', error)

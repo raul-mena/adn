@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 require('dotenv').config();
-
-mongoose.connect('mongodb://localhost:27017/adn', {
+const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/adn';
+mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 app.use(bodyParser.json({ limit: '10mb', extended: true }))
     //adding declared routes
 app.use('/api', adnRoutes);
+//simple message to see app working
 app.use('/', (req, res) => {
     res.status(200).send({ message: 'app working' })
 });
