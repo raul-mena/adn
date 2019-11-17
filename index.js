@@ -21,6 +21,9 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 app.use(bodyParser.json({ limit: '10mb', extended: true }))
     //adding declared routes
 app.use('/api', adnRoutes);
+app.use('/', (req, res) => {
+    res.status(200).send({ message: 'app working' })
+});
 
 //set default port
 const PORT = process.env.PORT || 3000;
