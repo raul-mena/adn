@@ -1,5 +1,5 @@
 const BitacoraModel = require('../models/Bitacora');
-
+const redis = require('../redis');
 /*
  *Function to process array is comming 
  *@ req -> all request data
@@ -15,7 +15,8 @@ const hasMutation = (req, res) => {
         } else {
             res.status(403).send({ message: 'mutaion' })
         }
-
+        //save data on cache and db
+        redis.set(adn.join(), { mutation: isMutation })
         BitacoraModel.create({ adn: adn.join(), mutation: isMutation });
     } catch (error) {
         //handle any issue on the process and send the issue

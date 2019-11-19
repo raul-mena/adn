@@ -3,12 +3,17 @@ const adnRoutes = require('./routes/adn');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const redis = require('./redis');
 
 require('dotenv').config();
 const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017/adn';
 mongoose.connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
+});
+//init redis
+redis.on('connect', function() {
+    console.log('Redis client connected');
 });
 
 //declare express app
