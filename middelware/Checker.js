@@ -15,6 +15,7 @@ const checkAdn = (req, res, next) => {
                 console.log(error);
                 throw error;
             }
+            result = JSON.parse(result);
             if (result) {
                 if (result.mutation) {
                     return res.status(403).send({ adnResult, message: 'ok' })
